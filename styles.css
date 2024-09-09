@@ -4,6 +4,9 @@ body {
   padding: 0;
   background-color: #2b2b2b;
   color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 header {
@@ -29,6 +32,7 @@ nav a:hover {
 
 section {
   padding: 40px 20px;
+  flex-grow: 1; /* Allows the content to grow and take up the remaining space */
 }
 
 .feature-item {
@@ -52,7 +56,7 @@ footer {
   text-align: center;
   padding: 10px;
   color: #6fa241;
-  position: absolute;
+  position: relative;
   bottom: 0;
   width: 100%;
 }
