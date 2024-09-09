@@ -18,7 +18,7 @@
 
   <section id="intro">
     <h2>Welcome to Faldron</h2>
-    <p>The ultimate bot for **Faldon**, providing NPC auto-attack and auto-loot capabilities.</p>
+    <p>The ultimate bot for Faldon, providing NPC auto-attack and auto-loot capabilities.</p>
   </section>
 
   <section id="features">
@@ -36,13 +36,10 @@
   <section id="video">
     <h2>Watch Faldron in Action</h2>
     <div class="video-container">
-      <!-- First video -->
       <video width="400" controls>
         <source src="demo.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      
-      <!-- Second video -->
       <video width="400" controls>
         <source src="demo2.mp4" type="video/mp4">
         Your browser does not support the video tag.
@@ -101,40 +98,51 @@
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-          alert('Transaction completed by ' + details.payer.name.given_name);
-
           const licenseID = generateLicenseID();
           const expirationDate = calculateExpirationDate();
 
-          // Make POST request to our serverless function
-          fetch('/.netlify/functions/create-license', {
+          // Send request to create license
+          fetch('https://faldon-idle-server-fbfdcd5d8349.herokuapp.com/create_license', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               license_id: licenseID,
-              expiration_date: expirationDate,
-              email: details.payer.email_address,
-              transactionId: details.id
+              expiration_date: expirationDate
             })
           })
           .then(response => response.json())
           .then(data => {
             if (data.success) {
-              alert('License created successfully. Your license key is: ' + licenseID + '\nExpiration date: ' + expirationDate);
+              alert(`Thank you for your purchase! Your license has been created.\nLicense ID: ${licenseID}\nExpiration Date: ${expirationDate}`);
             } else {
-              throw new Error('License creation failed');
+              throw new Error('Failed to create license');
             }
           })
           .catch((error) => {
-            console.error('Error creating license:', error);
+            console.error('Error:', error);
             alert('There was an error creating your license. Please contact support.');
+          });
+
+          // Send email with license details
+          fetch('https://your-api-url.com/send-license', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              to: 'anthonyreeder123@gmail.com',
+              subject: 'New Faldron License',
+              text: `New license created:\nLicense ID: ${licenseID}\nExpiration Date: ${expirationDate}\nTransaction ID: ${details.id}\nBuyer Email: ${details.payer.email_address}`
+            })
+          })
+          .catch((error) => {
+            console.error('Error sending email:', error);
           });
         });
       }
     }).render('#paypal-button-container');
   </script>
-
 </body>
 </html>
