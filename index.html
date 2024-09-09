@@ -68,35 +68,11 @@
     <p>&copy; 2024 Faldron. All rights reserved.</p>
   </footer>
 
-  <!-- Hidden form for email submission -->
-  <form id="licenseForm" action="https://formsubmit.co/anthonyreeder123@gmail.com" method="POST" style="display:none;">
-    <input type="hidden" name="_subject" value="New Faldron License Purchase">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="buyerEmail" id="buyerEmail">
-    <input type="hidden" name="buyerName" id="buyerName">
-    <input type="hidden" name="purchaseTime" id="purchaseTime">
-    <input type="hidden" name="transactionId" id="transactionId">
-    <input type="hidden" name="amount" id="amount">
-    <input type="hidden" name="currency" id="currency">
-  </form>
-
   <!-- PayPal SDK script -->
   <script src="https://www.paypal.com/sdk/js?client-id=AXqR21tNj_crb325oDOxOUfFUtGcEdFxbALzBQgC77jDn13sVFCEoXdzbn6vwO9QuLxdaTkN_S_9qnzl&currency=USD"></script>
 
   <!-- PayPal Button Script -->
   <script>
-    function submitLicenseForm(details) {
-      const form = document.getElementById('licenseForm');
-      document.getElementById('buyerEmail').value = details.payer.email_address;
-      document.getElementById('buyerName').value = `${details.payer.name.given_name} ${details.payer.name.surname}`;
-      document.getElementById('purchaseTime').value = new Date().toISOString();
-      document.getElementById('transactionId').value = details.id;
-      document.getElementById('amount').value = details.purchase_units[0].amount.value;
-      document.getElementById('currency').value = details.purchase_units[0].amount.currency_code;
-      
-      form.submit();
-    }
-
     function displayThankYouMessage() {
       const message = document.createElement('div');
       message.style.position = 'fixed';
@@ -128,7 +104,6 @@
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-          submitLicenseForm(details);
           displayThankYouMessage();
         });
       }
