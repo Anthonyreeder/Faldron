@@ -74,6 +74,21 @@
 
   <!-- PayPal Button Script -->
   <script>
+    function generateLicenseID() {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = '';
+      for (let i = 0; i < 10; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return result;
+    }
+
+    function calculateExpirationDate() {
+      const date = new Date();
+      date.setMonth(date.getMonth() + 1);
+      return date.toISOString().split('T')[0] + 'T23:59:59';
+    }
+
     paypal.Buttons({
       createOrder: function(data, actions) {
         return actions.order.create({
@@ -87,24 +102,34 @@
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
           alert('Transaction completed by ' + details.payer.name.given_name);
-  
-          // Make POST request to backend to create the license
-          fetch('/create-license', {
+
+          const licenseID = generateLicenseID();
+          const expirationDate = calculateExpirationDate();
+
+          // Make POST request to our serverless function
+          fetch('/.netlify/functions/create-license', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              email: details.payer.email_address, // User's PayPal email
-              transactionId: details.id // PayPal transaction ID
+              license_id: licenseID,
+              expiration_date: expirationDate,
+              email: details.payer.email_address,
+              transactionId: details.id
             })
           })
           .then(response => response.json())
           .then(data => {
-            alert('License created and sent to ' + details.payer.email_address);
+            if (data.success) {
+              alert('License created successfully. Your license key is: ' + licenseID + '\nExpiration date: ' + expirationDate);
+            } else {
+              throw new Error('License creation failed');
+            }
           })
           .catch((error) => {
             console.error('Error creating license:', error);
+            alert('There was an error creating your license. Please contact support.');
           });
         });
       }

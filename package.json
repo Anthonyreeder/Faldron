@@ -1,0 +1,8 @@
+{
+  "name": "faldron-website",
+  "version": "1.0.0",
+  "description": "Faldron website with license creation",
+  "dependencies": {
+    "axios": "^1.7.7"
+  }
+}
