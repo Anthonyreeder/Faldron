@@ -3,33 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bot Showcase</title>
+  <title>Faldron - NPC Attack and Loot Automation</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>Game Bot</h1>
+    <h1>Faldron</h1>
     <nav>
       <a href="#features">Features</a>
       <a href="#how-to">How to Use</a>
-      <a href="#buy">Buy</a>
+      <a href="#buy">Buy Now</a>
     </nav>
   </header>
 
   <section id="intro">
-    <h2>What the Bot Does</h2>
-    <p>A description of your bot's functionality, like auto-killing and looting features.</p>
+    <h2>Welcome to Faldron</h2>
+    <p>The ultimate bot for **Faldon**, providing NPC auto-attack and auto-loot capabilities.</p>
   </section>
 
   <section id="features">
-    <h2>Features</h2>
-    <img src="image1.jpg" alt="Feature image 1">
-    <img src="image2.jpg" alt="Feature image 2">
-    <!-- Add more images and description of features -->
+    <h2>Key Features</h2>
+    <div class="feature-item">
+      <img src="npc_attack.jpg" alt="NPC Attack" />
+      <p>Automated NPC Attack: Engage enemies with precision and efficiency.</p>
+    </div>
+    <div class="feature-item">
+      <img src="auto_loot.jpg" alt="Auto Loot" />
+      <p>Auto-Collect Loot: Automatically collect loot within range, no manual effort required!</p>
+    </div>
   </section>
 
   <section id="video">
-    <h2>Watch it in Action</h2>
+    <h2>Watch Faldron in Action</h2>
     <video width="600" controls>
       <source src="demo.mp4" type="video/mp4">
       Your browser does not support the video tag.
@@ -39,25 +44,25 @@
   <section id="how-to">
     <h2>How to Set It Up</h2>
     <ol>
-      <li>Download the bot from the link.</li>
-      <li>Follow these setup instructions...</li>
-      <!-- Provide step-by-step guide -->
+      <li>Download Faldron from the link provided after purchase.</li>
+      <li>Follow the simple steps to integrate it with your game.</li>
+      <li>Customize your settings for optimal performance.</li>
     </ol>
   </section>
 
   <section id="buy">
-    <h2>Buy the Bot</h2>
+    <h2>Buy Faldron Now</h2>
+    <p>Get Faldron today and automate your NPC battles and loot collection in Faldon.</p>
     <div id="paypal-button"></div>
-    <!-- PayPal Button Script Here -->
   </section>
 
   <footer>
-    <p>Contact us at support@example.com</p>
+    <p>&copy; 2024 Faldron. All rights reserved.</p>
   </footer>
 
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script>
   <script>
-    // PayPal integration script here
+    paypal.Buttons().render('#paypal-button');
   </script>
 </body>
 </html>
