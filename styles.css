@@ -4,9 +4,6 @@ body {
   padding: 0;
   background-color: #2b2b2b;
   color: #e0e0e0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 header {
@@ -32,7 +29,6 @@ nav a:hover {
 
 section {
   padding: 40px 20px;
-  flex-grow: 1; /* Allows the content to grow and take up the remaining space */
 }
 
 .feature-item {
@@ -47,8 +43,10 @@ section {
   border-radius: 8px;
 }
 
-#paypal-button {
-  margin-top: 20px;
+.video-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
 }
 
 footer {
