@@ -62,16 +62,76 @@
   <section id="buy">
     <h2>Buy Faldron Now</h2>
     <p>Get Faldron today and automate your NPC battles and loot collection in Faldon.</p>
-    <div id="paypal-button"></div>
+    <div id="paypal-button-container"></div>
   </section>
 
   <footer>
     <p>&copy; 2024 Faldron. All rights reserved.</p>
   </footer>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script>
+  <!-- PayPal SDK script -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AXqR21tNj_crb325oDOxOUfFUtGcEdFxbALzBQgC77jDn13sVFCEoXdzbn6vwO9QuLxdaTkN_S_9qnzl&currency=USD"></script>
+
+  <!-- PayPal Button Script -->
   <script>
-    paypal.Buttons().render('#paypal-button');
+    function generateLicenseID() {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = '';
+      for (let i = 0; i < 10; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return result;
+    }
+
+    function calculateExpirationDate() {
+      const date = new Date();
+      date.setMonth(date.getMonth() + 1);
+      return date.toISOString().split('T')[0] + 'T23:59:59';
+    }
+
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '99.99' // Product price
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert('Transaction completed by ' + details.payer.name.given_name);
+
+          const licenseID = generateLicenseID();
+          const expirationDate = calculateExpirationDate();
+
+          // Make POST request to the Faldon Idle Server to create the license
+          fetch('https://faldon-idle-server-fbfdcd5d8349.herokuapp.com/create_license', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              license_id: licenseID,
+              expiration_date: expirationDate
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            alert('License created successfully. Your license key is: ' + licenseID + '\nExpiration date: ' + expirationDate);
+            // Here you would typically send an email to the user with their license details
+            // Since we can't send emails directly from the browser, you might want to implement
+            // a server-side endpoint to handle email sending
+          })
+          .catch((error) => {
+            console.error('Error creating license:', error);
+            alert('There was an error creating your license. Please contact support.');
+          });
+        });
+      }
+    }).render('#paypal-button-container');
   </script>
+
 </body>
 </html>
